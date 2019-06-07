@@ -7,3 +7,6 @@ Codigo aberto de um jogo de pacman em allegro:
 Efeitos e outras artes 2d pixeladas para usar:
 
  - https://itch.io/game-assets/free/tag-8-bit
+ 
+Manual de todas as funcoes do ALLEGRO 5:
+ - https://liballeg.org/a5docs/5.2.0/refman.pdf
