@@ -156,14 +156,12 @@
     int main(void){
         int desenha = 1;
         int sair = 0;
-        int frameAtual;
         int framesTotal;
         int frameReferencia = 0;
         int cameraX = 0;
         int cameraY = 0;
-        char direcaoMagia;
         //essa variavel vai determinar para qual direcao a magia sera lancada
-        int magiaPos = 0;
+        char magiaPos = 0;
         //vou usar para receber os comandos do teclado
         char tecla;
      
@@ -171,9 +169,9 @@
         int i;
 
     ///*--SPRITES DE PERSONAGENS--*///
-        //largura e altura de cada sprite dentro da folha
+        //largura e altura de cada sprite dentro da folha de personagens
         //104 x 100
-        int altura_sprite=104, largura_sprite=100;
+        int altura_sprite=106, largura_sprite=85;
         //quantos sprites tem em cada linha da folha, e a atualmente mostrada
         int coluna_atual=0;
         //quantos sprites tem em cada coluna da folha, e a atualmente mostrada
@@ -189,12 +187,15 @@
      
 
      ///---* SPRITES DE MAGIA --*//////
+        // tamanho do sprite de magia de fogo e galin
         int altura_magia = 128, largura_magia = 128;
-        // posicao da magia
-        int pos_x_magiaZ = 0, pos_y_magiaZ = 0;
-        int regiao_x_magia_Z = 0, regiao_y_magia_Z = 0;
+        // tamanho do sprite da magia de raio
+        int altura_magia_Thunder = 256, largura_magia_Thunder = 64; 
+        //tamanho dos sprites da magia de lazer
+        int altura_magia_Lazer = 64 , largura_margia_Lazer = 256;
 
-        int pos_x_magiaX = 0, pos_y_magiaX = 0;
+        // posicao da magia na folha
+        int regiao_x_magia_Z = 0, regiao_y_magia_Z = 0;
         int regiao_x_magia_X = 0, regiao_y_magia_X = 0;
 
         int pos_x_magiaC = 0, pos_y_magiaC = 0;
@@ -265,7 +266,6 @@
                         // COOLDOWN DE 3 SEGUNDOS
                             if(framesTotal - frameReferencia >= 60){
                                 printf("Reconheci o Z!\n");
-                                direcaoMagia = magiaPos;
                                 frameReferencia = framesTotal;
                                 tecla = 5;
                             }
@@ -274,7 +274,6 @@
                     // Botão X magia de gelo
                         case ALLEGRO_KEY_X:
                             if(framesTotal - frameReferencia >= 60){
-                                direcaoMagia = magiaPos;
                                 frameReferencia = framesTotal;  
                                 tecla = 6;
                             }
@@ -283,7 +282,6 @@
                     // Botão C magia de raio
                         case ALLEGRO_KEY_C:
                             if(framesTotal - frameReferencia >= 60){
-                                direcaoMagia = magiaPos;
                                 frameReferencia = framesTotal;
                                 tecla = 7;
                             }
@@ -292,7 +290,6 @@
                     //Botão V magia de lazer
                         case ALLEGRO_KEY_V:
                             if(framesTotal - frameReferencia >= 60){ // cooldownzinho
-                                direcaoMagia = magiaPos;
                                 frameReferencia = framesTotal;
                                 tecla = 8;
                             }
@@ -314,7 +311,6 @@
                         tecla = 0;
                         vel_y_sprite = 0;
                         linha_atual = 2;
-                        frameAtual = 0;
                         break;
                     //seta para baixo
                     case ALLEGRO_KEY_DOWN:
@@ -393,26 +389,26 @@
                 // tenho que desenhar elas frame por frame
                 
 
-                ////// --* MAGIA DE FOGO //////////////////////////////////////////////////////////////////
+                ////// --* MAGIA DE FOGO (Z) //////////////////////////////////////////////////////////////////
                 // PARA BAIXO
                 if(magiaPos == 'B' && tecla == 5 && framesTotal - frameReferencia < 12 && frameReferencia != 0){
                         printf("printando magia aqui!\n");
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 250, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 200, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 150, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 100, 0);
                 }
@@ -422,19 +418,19 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 250, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 200, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 150, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 100, 0);
                 }
@@ -444,19 +440,19 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 250,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 200,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 150,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 100,pos_y_sprite, 0);
                 }
@@ -466,42 +462,44 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 250,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 200,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 150,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_Z,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 100,pos_y_sprite, 0);
                 }
 
-                ////////// *-- MAGIA DE GELO /////////////////////////////////////////////////
+                ////////// *-- MAGIA DE GELO (X) /////////////////////////////////////////////////
+                
+                //PARA BAIXO
                 if(magiaPos == 'B' && tecla == 6 && framesTotal - frameReferencia < 12 && frameReferencia != 0){
                         printf("printando magia aqui!\n"); 
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 250, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 200, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 150, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite + 100, 0);
                 }
@@ -511,19 +509,19 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_Z,regiao_y_magia_Z+(128*cooldown),
+                            regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 250, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 200, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 150, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite,pos_y_sprite - 100, 0);
                 }
@@ -533,19 +531,19 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 250,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 200,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 150,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite + 100,pos_y_sprite, 0);
                 }
@@ -555,25 +553,126 @@
                         int cooldown = framesTotal - frameReferencia;
                         printf("%d", cooldown);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 250,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 200,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 150,pos_y_sprite, 0);
                             al_draw_bitmap_region(magia_X,
-                            regiao_x_magia_X,regiao_y_magia_X+(128*cooldown),
+                            regiao_x_magia_X,regiao_y_magia_X+(128*(cooldown-1)),
                             largura_magia,altura_magia,
                             pos_x_sprite - 100,pos_y_sprite, 0);
                 }
                 
+            ///////// --* MAGIA DE RAIO (C) ////////////////////////////////////
+                // ESSA VAI SER UMA PAREDE EM VOLTA DO USUARIO
                 
 
+                // PRINTANDO EM VOLTA DO USUARIO
+                if(tecla == 7 && framesTotal - frameReferencia < 10 && frameReferencia != 0){
+                        printf("printando magia aqui!\n"); 
+                        int cooldown = framesTotal - frameReferencia;
+                        printf("%d", cooldown);
+                            // em baixo
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite, pos_y_sprite - 100, 0);
+                            // em cime
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite, pos_y_sprite + 100, 0);
+                            // direita
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite + 100, pos_y_sprite, 0);
+                            // esquerda
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite - 100, pos_y_sprite, 0);
+                            // diagonal direita superior
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite + 100, pos_y_sprite + 100, 0);
+                            // diagonal esquerda superior
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite - 100, pos_y_sprite + 100, 0);
+                            // diagonal esquerda inferior
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite - 100, pos_y_sprite - 100, 0);
+                            //  diagonal direita inferior
+                            al_draw_bitmap_region(magia_C,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_C,
+                            largura_magia_Thunder,altura_magia_Thunder,
+                            pos_x_sprite + 100, pos_y_sprite - 100, 0);
+                }
+
+
+                //////////////////--* MAGIA DE LAZER/////////////////////////////
+                // VAI SER UM LASER COM O RANGE BEM ALTO MAS COOLDOWN ALTO TBM
+                    // PARA BAIXO
+                if(magiaPos == 'B' && tecla == 8 && framesTotal - frameReferencia < 9 && frameReferencia != 0){
+                        printf("printando magia aqui!\n");
+                        int cooldown = framesTotal - frameReferencia;
+                        printf("%d", cooldown);
+                            al_draw_bitmap_region(magia_V,
+                            regiao_x_magia_V,regiao_y_magia_V+(altura_magia_Lazer*(cooldown-1)),
+                            largura_margia_Lazer,altura_magia_Lazer,
+                            pos_x_sprite,pos_y_sprite + 300, 0);
+                            al_draw_rotated_bitmap(magia_V,
+                            pos_x_sprite, pos_y_sprite + 300,
+                            pos_x_sprite, pos_y_sprite + 300,
+                            90, 0);
+
+                }
+                // PARA CIMA
+                if(magiaPos == 'C' && tecla == 8 && framesTotal - frameReferencia < 9 && frameReferencia != 0){
+                        printf("printando magia aqui!\n");
+                        int cooldown = framesTotal - frameReferencia;
+                        printf("%d", cooldown);
+                            al_draw_bitmap_region(magia_V,
+                            regiao_x_magia_V,regiao_y_magia_V+(altura_magia_Lazer*(cooldown-1)),
+                            largura_margia_Lazer,altura_magia_Lazer,
+                            pos_x_sprite,pos_y_sprite - 300, 0);
+                            al_draw_rotated_bitmap(magia_V,
+                            pos_x_sprite, pos_y_sprite + 300,
+                            pos_x_sprite, pos_y_sprite + 300,
+                            90, 0);
+                }
+                // PARA DIREITA
+                if(magiaPos == 'D' && tecla == 8 && framesTotal - frameReferencia < 9 && frameReferencia != 0){
+                        printf("printando magia aqui!\n");
+                        int cooldown = framesTotal - frameReferencia;
+                        printf("%d", cooldown);
+                            al_draw_bitmap_region(magia_V,
+                            regiao_x_magia_V,regiao_y_magia_V + (altura_magia_Lazer*(cooldown-1)),
+                            largura_margia_Lazer,altura_magia_Lazer,
+                            pos_x_sprite + 300,pos_y_sprite, 0);
+                }
+                // PARA ESQUERDA
+                if(magiaPos == 'E' && tecla == 8 && framesTotal - frameReferencia < 9 && frameReferencia != 0){
+                        printf("printando magia aqui!\n");
+                        int cooldown = framesTotal - frameReferencia;
+                        printf("%d", cooldown);
+                            al_draw_bitmap_region(magia_V,
+                            regiao_x_magia_V,regiao_y_magia_V+(altura_magia_Lazer*(cooldown-1)),
+                            largura_margia_Lazer,altura_magia_Lazer,
+                            pos_x_sprite - 500,pos_y_sprite, 0);
+                }
                 
                 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
