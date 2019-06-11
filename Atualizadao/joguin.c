@@ -1018,7 +1018,8 @@
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////// *-- DESENHANDO CAIO BLACK --* ///////////////////////////////////////////////////////////////////////////////////////////////////// 
-                if(personagem == 1){                
+                if(personagem == 1){
+                    int entrei;                
                     if(vel_y_sprite == 0 && vel_x_sprite == 0){
                         // tenho 3 sprites para cada direcao
                         if(magiaPos == 'C'){
@@ -1027,18 +1028,21 @@
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 0;
                             }
                             if(andandoCima[1] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 1;
                             }
                             if(andandoCima[2] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 2;
                             }
                         }
                         if(magiaPos == 'B'){
@@ -1047,18 +1051,21 @@
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                    entrei = 0;
                             }
                             if(andandoBaixo[1] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 1;
                             }
                             if(andandoBaixo[2] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 2;
                             }
                         }
                         if(magiaPos == 'D'){
@@ -1067,18 +1074,21 @@
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 0;
                             }
                             if(andandoDireita[1] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 1;
                             }
                             if(andandoDireita[2] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 2;
                             }
                         }
                         if(magiaPos == 'E'){
@@ -1087,21 +1097,26 @@
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 0;
                             }
                             if(andandoEsquerda[1] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 1;
                             }
                             if(andandoEsquerda[2] == 1){
                                 al_draw_bitmap_region(folha_sprite_Caio_Black,
                                         regiao_x_folha,regiao_y_folha,
                                         largura_sprite,altura_sprite,
                                         pos_x_sprite,pos_y_sprite,0);
+                                entrei = 2;
                             }
                         }
+
                     }
+
                         // o sprite esta subindo
                         else if(vel_y_sprite > 0){
                             pos_y_sprite += vel_y_sprite;
@@ -1138,6 +1153,51 @@
                                 largura_sprite,altura_sprite,
                                 pos_x_sprite,pos_y_sprite,0);
                         }
+
+                ////---*--- SWITCH PARA CICLAR ENTRE OS SPRITES ----*----////
+                        switch (magiaPos)
+                    {
+                        case 'C':
+                            if(entrei == 0){
+                                andandoCima[0] = 0;
+                                andandoCima[1] = 1;
+                            }
+                            if(entrei == 1){
+                                andandoCima[1] = 0;
+                                andandoCima[2] = 1;
+                            }
+                            if(entrei == 2){
+                                andandoCima[2] = 0;
+                                andandoCima[0] = 1;
+                            }
+                        case 'B':
+                            if(entrei == 0){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                            if(entrei == 1){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                            if(entrei == 2){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                        case 'D':
+                            if(entrei == 0){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                            if(entrei == 1){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                            if(entrei == 2){
+                                andandoBaixo[0] = 0;
+                                andandoBaixo[1] = 1;
+                            }
+                        case 'E':
+                    }
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
