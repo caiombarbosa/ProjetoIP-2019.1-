@@ -16,14 +16,10 @@
 					//--* VARIAVES GLOBAIS DE VERDADE --*//	
 
 	// variaveis que vou usar para ciclar entre os sprites de movimentacao dos personagens
-	int andandoDireita[3] = {};
-    andandoDireita[0] = 1;
-    int andandoEsquerda[3] = {};
-    andandoEsquerda[0] = 1;
-    int andandoCima[3] = {};
-    andandoCima[0] = 1;
-    int andandoBaixo[3] = {};
-    andandoBaixo[0] = 1;
+	int andandoDireita[] = {};
+    int andandoEsquerda[] = {};
+    int andandoCima[] = {};
+    int andandoBaixo[] = {};
 
 
 	// variavel global do tamanho dos sprites do personagens
@@ -33,101 +29,6 @@
         int vida;
         int posX, posY;
     } Jogador;
-
-    void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
-    	if(magiaPos == 'C'){
-            if(andandoCima[0] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0,altura_sprite*3, // posicao para tirar da folha dos sprites
-                    largura_sprite,altura_sprite, // tamanho para tirar
-                    pos_x_sprite,pos_y_sprite,0); //  onde colocar a imagem, flags
-                entrei = 0;
-            }
-            if(andandoCima[1] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                  	largura_sprite*1,altura_sprite*3,
-                   	largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-                entrei = 1;
-            }
-          	if(andandoCima[2] == 1){
-               	al_draw_bitmap_region(folha_sprite_Caio_Black,
-          		   	largura_sprite*2,altura_sprite*3,
-                    largura_sprite,altura_sprite,
-                   	pos_x_sprite,pos_y_sprite,0);
-                entrei = 2;
-            }
-        }
-        if(magiaPos == 'B'){
-            if(andandoBaixo[0] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0,0,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-                entrei = 0;
-            }
-        	if(andandoBaixo[1] == 1){
-             	al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    largura_sprite*1,altura_sprite*0,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-            entrei = 1;
-           	}
-            if(andandoBaixo[2] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-             	    largura_sprite*2,altura_sprite*0,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-          	entrei = 2;
-            }
-        }
-        if(magiaPos == 'D'){
-          	if(andandoDireita[0] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0,altura_sprite*2,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-            entrei = 0;
-        	}
-        	if(andandoDireita[1] == 1){
-               	al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    largura_sprite*1,altura_sprite*2,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-            entrei = 1;
-       		}
-            if(andandoDireita[2] == 1){
-               	al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    largura_sprite*2,altura_sprite*2,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-            entrei = 2;
-            }
-       	}
-        if(magiaPos == 'E'){
-            if(andandoEsquerda[0] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0 ,altura_sprite*1,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-            entrei = 0;
-        	}
-            if(andandoEsquerda[1] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                   	largura_sprite*1 ,altura_sprite*1,
-                    largura_sprite,altura_sprite,
-                	pos_x_sprite,pos_y_sprite,0);
-            entrei = 1;
-           	}
-            if(andandoEsquerda[2] == 1){
-                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    largura_sprite*2 ,altura_sprite*1,
-                    largura_sprite,altura_sprite,
-                    pos_x_sprite,pos_y_sprite,0);
-                entrei = 2;
-            }
-        }
-    }
 
 
     ALLEGRO_DISPLAY *janela = NULL;
@@ -171,8 +72,94 @@
     ALLEGRO_BITMAP *magia_splash = NULL;
     ALLEGRO_BITMAP *magia_teleport = NULL;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-     
+/////////////////////////////////////////////////////*-- FUNCOES --*////////////////////////////////////////////
+
+void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
+    	if(magiaPos == 'C'){
+            if(andandoCima[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,altura_sprite*3, // posicao para tirar da folha dos sprites
+                    largura_sprite,altura_sprite, // tamanho para tirar
+                    pos_x_sprite,pos_y_sprite,0); //  onde colocar a imagem, flags
+            }
+            if(andandoCima[1] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                  	largura_sprite*1,altura_sprite*3,
+                   	largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            }
+          	if(andandoCima[2] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+          		   	largura_sprite*2,altura_sprite*3,
+                    largura_sprite,altura_sprite,
+                   	pos_x_sprite,pos_y_sprite,0);
+            }
+        }
+        if(magiaPos == 'B'){
+            if(andandoBaixo[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            }
+        	if(andandoBaixo[1] == 1){
+             	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*1,altura_sprite*0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+           	}
+            if(andandoBaixo[2] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+             	    largura_sprite*2,altura_sprite*0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            }
+        }
+        if(magiaPos == 'D'){
+          	if(andandoDireita[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+        	}
+        	if(andandoDireita[1] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*1,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+       		}
+            if(andandoDireita[2] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*2,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            }
+       	}
+        if(magiaPos == 'E'){
+            if(andandoEsquerda[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+        	}
+            if(andandoEsquerda[1] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                   	largura_sprite*1 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                	pos_x_sprite,pos_y_sprite,0);
+           	}
+            if(andandoEsquerda[2] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*2 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            }
+        }
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     void error_msg(char *text){
     	al_show_native_message_box(janela,"ERRO",
     		"Ocorreu o seguinte erro e o programa sera finalizado:",
@@ -219,16 +206,16 @@
 
 
         folha_sprite_Caio_White = al_load_bitmap("caioandandoWhite.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Caio_White){
+            error_msg("Falha ao carregar sprites 1");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
             return 0;
         }
         folha_sprite_Caio_White_Batalha = al_load_bitmap("caioemposedebatalhaWhite.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Caio_White_Batalha){
+            error_msg("Falha ao carregar sprites 2");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -236,8 +223,8 @@
         }
 
         folha_sprite_Caio_Black = al_load_bitmap("caioandandoBlack.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Caio_Black){
+            error_msg("Falha ao carregar sprites 3");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -245,8 +232,26 @@
         }
 
         folha_sprite_Caio_Black_Batalha = al_load_bitmap("caioemposedebatalhaBlack.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Caio_Black_Batalha){
+            error_msg("Falha ao carregar sprites 4");
+            al_destroy_timer(timer);
+            al_destroy_display(janela);
+            al_destroy_event_queue(fila_eventos);
+            return 0;
+        }
+
+        folha_sprite_Juan = al_load_bitmap("juanandando.png");
+        if (!folha_sprite_Juan){
+            error_msg("Falha ao carregar sprites 5");
+            al_destroy_timer(timer);
+            al_destroy_display(janela);
+            al_destroy_event_queue(fila_eventos);
+            return 0;
+        }
+
+        folha_sprite_Juan_Batalha = al_load_bitmap("juanemposedebatalha.png");
+        if (!folha_sprite_Juan_Batalha){
+            error_msg("Falha ao carregar sprites 6");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -254,8 +259,8 @@
         }
 
         folha_sprite_Bianca = al_load_bitmap("biancaandando.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Bianca){
+            error_msg("Falha ao carregar sprites 7");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -263,8 +268,8 @@
         }
 
         folha_sprite_Bianca_Batalha = al_load_bitmap("biancaemposedebatalha.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Bianca_Batalha){
+            error_msg("Falha ao carregar sprites 8");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -272,8 +277,8 @@
         }
 
         folha_sprite_Alisson = al_load_bitmap("alissonandando.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Alisson){
+            error_msg("Falha ao carregar sprites 9");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -281,8 +286,8 @@
         }
 
         folha_sprite_Alisson_Batalha = al_load_bitmap("alissonemposedebatalha.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Alisson_Batalha){
+            error_msg("Falha ao carregar sprites 10");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -290,8 +295,8 @@
         }
 
         folha_sprite_Calabria = al_load_bitmap("calabriaandando.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Calabria){
+            error_msg("Falha ao carregar sprites 11");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -299,8 +304,8 @@
         }
 
         folha_sprite_Calabria_Batalha = al_load_bitmap("calabriaemposedebatalha.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Calabria_Batalha){
+            error_msg("Falha ao carregar sprites 12");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -308,8 +313,8 @@
         }
 
         folha_sprite_Eric = al_load_bitmap("ericandando.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Eric){
+            error_msg("Falha ao carregar sprites 13");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -317,8 +322,8 @@
         }
 
         folha_sprite_Eric_Batalha = al_load_bitmap("ericemposedebatalha.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Eric_Batalha){
+            error_msg("Falha ao carregar sprites 14");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -326,8 +331,8 @@
         }
 
         folha_sprite_Lael = al_load_bitmap("laelandando.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Lael){
+            error_msg("Falha ao carregar sprites 15");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -335,8 +340,8 @@
         }
 
         folha_sprite_Lael_Batalha = al_load_bitmap("laelemposedebatalha.png");
-        if (!folha_sprite){
-            error_msg("Falha ao carregar sprites");
+        if (!folha_sprite_Lael_Batalha){
+            error_msg("Falha ao carregar sprites 16");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -347,7 +352,7 @@
 
         magia_Fire = al_load_bitmap("Burn.png");
         if (!magia_Fire){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 1");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -356,7 +361,7 @@
         magia_Gelo = al_load_bitmap("iceBurst.png");
         if(!magia_Gelo)
         {
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 2");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -364,7 +369,7 @@
         }
         magia_Thunder = al_load_bitmap("Thunder.png");
         if (!magia_Thunder){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 3");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -372,7 +377,7 @@
         }
         magia_Lazer = al_load_bitmap("Lazer.png");
         if (!magia_Lazer){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 4");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -381,7 +386,7 @@
 
         magia_Blue_Energy_Ball = al_load_bitmap("blueEnergyBall.png");
         if (!magia_Blue_Energy_Ball){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 5");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -390,16 +395,16 @@
 
         magia_Blue_Fire = al_load_bitmap("blueFlame.png");
         if (!magia_Blue_Fire){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 6");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
             return 0;
         }
 
-        magia_explosionPurple = al_load_bitmap("explosioPurple.png");
+        magia_explosionPurple = al_load_bitmap("explosionPurple.png");
         if (!magia_explosionPurple){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 7");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -408,7 +413,7 @@
 
         magia_green_Energy_Ball = al_load_bitmap("greenEnergyBall.png");
         if (!magia_green_Energy_Ball){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 8");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -417,16 +422,16 @@
 
         magia_ice_splash = al_load_bitmap("iceSplash.png");
         if (!magia_ice_splash){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 9");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
             return 0;
         }
 
-        magia_lightningRadial = al_load_bitmap("lightningradial.png");
+        magia_lightningRadial = al_load_bitmap("lightning_radial.png");
         if (!magia_lightningRadial){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 10");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -435,7 +440,7 @@
 
         magia_red_Energy_Ball = al_load_bitmap("redEnergyBall.png");
         if (!magia_red_Energy_Ball){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 11");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -444,7 +449,7 @@
 
         magia_splash = al_load_bitmap("Splash.png");
         if (!magia_splash){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 12");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -453,16 +458,16 @@
 
         magia_teleport = al_load_bitmap("teleportLightning.png");
         if (!magia_teleport){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 13");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
             return 0;
         }
 
-        magia_yellow_Energy_Ball = al_load_bitmap("yellowEneregyBall.png");
+        magia_yellow_Energy_Ball = al_load_bitmap("yellowEnergyBall.png");
         if (!magia_yellow_Energy_Ball){
-            error_msg("Falha ao carregar sprite da magia");
+            error_msg("Falha ao carregar sprite da magia 14");
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
@@ -494,7 +499,18 @@
             al_destroy_timer(timer);
             al_destroy_display(janela);
             al_destroy_event_queue(fila_eventos);
-            al_destroy_bitmap(folha_sprite);
+            al_destroy_bitmap(folha_sprite_Alisson);
+            al_destroy_bitmap(folha_sprite_Alisson_Batalha);
+            al_destroy_bitmap(folha_sprite_Bianca);
+            al_destroy_bitmap(folha_sprite_Bianca_Batalha);
+            al_destroy_bitmap(folha_sprite_Caio_Black);
+            al_destroy_bitmap(folha_sprite_Caio_Black_Batalha);
+            al_destroy_bitmap(folha_sprite_Caio_White);
+            al_destroy_bitmap(folha_sprite_Caio_White_Batalha);
+            al_destroy_bitmap(folha_sprite_Calabria);
+            al_destroy_bitmap(folha_sprite_Calabria_Batalha);
+            al_destroy_bitmap(folha_sprite_Eric);
+            al_destroy_bitmap(folha_sprite_Eric_Batalha);
             al_destroy_bitmap(magia_Fire);
             return 0;
         }
@@ -509,6 +525,11 @@
 
 /////////////////////////////////////////   VARIAVEIS 'GLOBAIS'   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int main(void){
+        andandoDireita[0] = 1;
+        andandoBaixo[0] = 1;
+        andandoEsquerda[0] = 1;
+        andandoEsquerda[0] = 1;
+        int entrei;
         int spriteAtual = 0; // para ciclar entre os sprites na movimentacao
         int i;
         int personagem = 1;
@@ -527,7 +548,7 @@
     ///*--SPRITES DE PERSONAGENS--*///
         //largura e altura de cada sprite dentro da folha de personagens
         //104 x 100
-        int altura_sprite=100, largura_sprite=80;
+        int altura_sprite=100, largura_sprite=60;
         //quantos sprites tem em cada linha da folha, e a atualmente mostrada
         int coluna_atual=0;
         //quantos sprites tem em cada coluna da folha, e a atualmente mostrada
@@ -753,8 +774,6 @@
                 al_draw_bitmap(fundo,(cameraX*-1)-400,(cameraY*-1)-400,0);
             
                 ////////////////////////////////////////////////* -- DESENHANDO AS MAGIAS QUE FORAM USADA --*///////////////////////////////////////////////////////////////////////////
-                
-                --* CAIO BLACK --*
 
                 if(personagem == 1){ //  esse sera o personagem Caio Black
 //--------------------------------------------//////////// --* MAGIA DE FOGO (Z) //////////////------------------------------------------------------------------------------//
@@ -916,11 +935,8 @@
                     }
 
                     if(tecla == 7 && framesTotal - frameReferencia < 12 && frameReferencia != 0){
-                        int cooldown = framesTotal - frameReferencia
-
+                        int cooldown = framesTotal - frameReferencia;
                     }
-
-                    
                 }
 
 //--------------------------------------------//////////// *-- MAGIA DE GELO (X) ////////////////--------------------------------------------/////
@@ -1025,42 +1041,42 @@
                         printf("%d", cooldown);
                             // em baixo
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite, pos_y_sprite - 100, 0);
                             // em cime
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite, pos_y_sprite + 100, 0);
                             // direita
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite + 100, pos_y_sprite, 0);
                             // esquerda
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite - 100, pos_y_sprite, 0);
                             // diagonal direita superior
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite + 100, pos_y_sprite + 100, 0);
                             // diagonal esquerda superior
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite - 100, pos_y_sprite + 100, 0);
                             // diagonal esquerda inferior
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite - 100, pos_y_sprite - 100, 0);
                             //  diagonal direita inferior
                             al_draw_bitmap_region(magia_Thunder,
-                            regiao_x_magia_C+((cooldown-1)*64),regiao_y_magia_Thunder,
+                            regiao_x_magia_C+((cooldown-1)*64),regiao_x_magia_C,
                             largura_magia_Thunder,altura_magia_Thunder,
                             pos_x_sprite + 100, pos_y_sprite - 100, 0);
                 }
@@ -1127,10 +1143,9 @@
                     if(vel_y_sprite > 0 || vel_y_sprite < 0){
                         // adequando as posicoes de acordo com a velocidade
                         pos_y_sprite += vel_y_sprite;
-                        
-                        int entrei;
-                    	int linhas = 0;
 
+                    	int linhas = 0;
+                        int referencia;
                         // tenho 3 sprites para cada direcao
                         if(magiaPos == 'C'){
                             if(andandoCima[0] == 1){
@@ -1194,8 +1209,6 @@
                     else if(vel_x_sprite > 0 || vel_x_sprite < 0){
                         // adequando as posicoes de acordo com a velocidade
                         pos_x_sprite += vel_x_sprite;
-                        
-                        int entrei;
                     	int linhas = 0;
 
                         // tenho 3 sprites para cada direcao
@@ -1255,8 +1268,26 @@
                                 entrei = 2;
                             }
                         }
-                    }      
                     }
+
+                    else if(vel_x_sprite == 0 && vel_y_sprite == 0){
+                        switch (magiaPos)
+                        {
+                            case 'B':
+                                desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                break;
+                            case 'C':
+                                desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                break;
+                            case 'D':
+                                desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                break;
+                            case 'E':
+                                desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                break;
+                        }
+                    }      
+                }
 
                 ////---*--- SWITCH PARA CICLAR ENTRE OS SPRITES ----*----////
                         switch (magiaPos)
@@ -1317,7 +1348,6 @@
                                 andandoEsquerda[0] = 1;
                             }
                             break;
-                    }
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1326,8 +1356,8 @@
                 desenha = 0;
             }
         }
-        al_destroy_bitmap(magia_Fire);
-        al_destroy_bitmap(folha_sprite);
+        al_destroy_bitmap(fundo);
+        al_destroy_bitmap(folha_sprite_Caio_Black);
         al_destroy_bitmap(fundo);
         al_destroy_timer(timer);
         al_destroy_display(janela);
