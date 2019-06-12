@@ -12,11 +12,123 @@
     #define ALTURA_TELA 900
     #define largura_mapa 5000
     #define altura_mapa 2500
+					
+					//--* VARIAVES GLOBAIS DE VERDADE --*//	
+
+	// variaveis que vou usar para ciclar entre os sprites de movimentacao dos personagens
+	int andandoDireita[3] = {};
+    andandoDireita[0] = 1;
+    int andandoEsquerda[3] = {};
+    andandoEsquerda[0] = 1;
+    int andandoCima[3] = {};
+    andandoCima[0] = 1;
+    int andandoBaixo[3] = {};
+    andandoBaixo[0] = 1;
+
+
+	// variavel global do tamanho dos sprites do personagens
+    int altura_sprite=100, largura_sprite=80;
 
     typedef struct {
         int vida;
         int posX, posY;
     } Jogador;
+
+    void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
+    	if(magiaPos == 'C'){
+            if(andandoCima[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,altura_sprite*3, // posicao para tirar da folha dos sprites
+                    largura_sprite,altura_sprite, // tamanho para tirar
+                    pos_x_sprite,pos_y_sprite,0); //  onde colocar a imagem, flags
+                entrei = 0;
+            }
+            if(andandoCima[1] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                  	largura_sprite*1,altura_sprite*3,
+                   	largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+                entrei = 1;
+            }
+          	if(andandoCima[2] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+          		   	largura_sprite*2,altura_sprite*3,
+                    largura_sprite,altura_sprite,
+                   	pos_x_sprite,pos_y_sprite,0);
+                entrei = 2;
+            }
+        }
+        if(magiaPos == 'B'){
+            if(andandoBaixo[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+                entrei = 0;
+            }
+        	if(andandoBaixo[1] == 1){
+             	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*1,altura_sprite*0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            entrei = 1;
+           	}
+            if(andandoBaixo[2] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+             	    largura_sprite*2,altura_sprite*0,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+          	entrei = 2;
+            }
+        }
+        if(magiaPos == 'D'){
+          	if(andandoDireita[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            entrei = 0;
+        	}
+        	if(andandoDireita[1] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*1,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            entrei = 1;
+       		}
+            if(andandoDireita[2] == 1){
+               	al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*2,altura_sprite*2,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            entrei = 2;
+            }
+       	}
+        if(magiaPos == 'E'){
+            if(andandoEsquerda[0] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    0 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+            entrei = 0;
+        	}
+            if(andandoEsquerda[1] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                   	largura_sprite*1 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                	pos_x_sprite,pos_y_sprite,0);
+            entrei = 1;
+           	}
+            if(andandoEsquerda[2] == 1){
+                al_draw_bitmap_region(folha_sprite_Caio_Black,
+                    largura_sprite*2 ,altura_sprite*1,
+                    largura_sprite,altura_sprite,
+                    pos_x_sprite,pos_y_sprite,0);
+                entrei = 2;
+            }
+        }
+    }
+
 
     ALLEGRO_DISPLAY *janela = NULL;
     ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
@@ -410,14 +522,6 @@
         char magiaPos = 0;
         //vou usar para receber os comandos do teclado
         char tecla;
-        int andandoDireita[3] = {};
-        andandoDireita[0] = 1;
-        int andandoEsquerda[3] = {};
-        andandoEsquerda[0] = 1;
-        int andandoCima[3] = {};
-        andandoCima[0] = 1;
-        int andandoBaixo[3] = {};
-        andandoBaixo[0] = 1;
 //////////////////////////////////////////////////////////////////////////////// *-- DEFININDO OS TAMANHOS DE CADA SPRITE --*//////////////////////////////////////////////////////////////////////
 
     ///*--SPRITES DE PERSONAGENS--*///
@@ -1019,12 +1123,10 @@
 
                 /////////////////////// *-- DESENHANDO CAIO BLACK --* ///////////////////////////////////////////////////////////////////////////////////////////////////// 
                 if(personagem == 1){
-                	// adequando as posicoes de acordo com a velocidade
-
-                	// o sprite esta subindo
-                    if(vel_y_sprite > 0){
+                	// o sprite esta descendo ou subindo
+                    if(vel_y_sprite > 0 || vel_y_sprite < 0){
+                        // adequando as posicoes de acordo com a velocidade
                         pos_y_sprite += vel_y_sprite;
-                        if(vel_y_sprite == 0 && vel_x_sprite == 0){
                         
                         int entrei;
                     	int linhas = 0;
@@ -1032,109 +1134,128 @@
                         // tenho 3 sprites para cada direcao
                         if(magiaPos == 'C'){
                             if(andandoCima[0] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        0,regiao_y_folha*altura_sprite*3,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 0;
                             }
                             if(andandoCima[1] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*1,regiao_y_folha*altura_sprite*3,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 1;
                             }
                             if(andandoCima[2] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*2,regiao_y_folha*altura_sprite*3,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 2;
                             }
                         }
                         if(magiaPos == 'B'){
                             if(andandoBaixo[0] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        0,regiao_y_folha*altura_sprite*0,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                     entrei = 0;
                             }
                             if(andandoBaixo[1] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*1,regiao_y_folha*altura_sprite*0,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 1;
                             }
                             if(andandoBaixo[2] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*2,regiao_y_folha*altura_sprite*0,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 2;
                             }
                         }
                         if(magiaPos == 'D'){
                             if(andandoDireita[0] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        0,regiao_y_folha*altura_sprite*2,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 0;
                             }
                             if(andandoDireita[1] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*1,regiao_y_folha*altura_sprite*2,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 1;
                             }
                             if(andandoDireita[2] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                        largura_sprite*2,regiao_y_folha*altura_sprite*2,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 2;
                             }
                         }
                         if(magiaPos == 'E'){
                             if(andandoEsquerda[0] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                       	0 ,regiao_y_folha*altura_sprite*1,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
-                                entrei = 0;
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                            	entrei = 0;
                             }
                             if(andandoEsquerda[1] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                       	largura_sprite*1 ,regiao_y_folha*altura_sprite*1,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 1;
                             }
                             if(andandoEsquerda[2] == 1){
-                                al_draw_bitmap_region(folha_sprite_Caio_Black,
-                                       	largura_sprite*2 ,regiao_y_folha*altura_sprite*1,
-                                        largura_sprite,altura_sprite,
-                                        pos_x_sprite,pos_y_sprite,0);
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                 entrei = 2;
                             }
                         }
-                    // o sprite esta descendo
-                    else if(vel_y_sprite < 0){
-                            pos_y_sprite += vel_y_sprite;
-                        }
-                    // o sprite esta indo para direta
-                    else if (vel_x_sprite > 0){
-                            pos_x_sprite += vel_x_sprite;
-                        }
-                    // o sprite esta indo para esquerda
-                    else if(vel_x_sprite < 0){
-                            pos_x_sprite += vel_x_sprite;                       
-                        }                
+                    }
 
+                    // o sprite esta indo para direita ou esquerda
+                    else if(vel_x_sprite > 0 || vel_x_sprite < 0){
+                        // adequando as posicoes de acordo com a velocidade
+                        pos_x_sprite += vel_x_sprite;
+                        
+                        int entrei;
+                    	int linhas = 0;
+
+                        // tenho 3 sprites para cada direcao
+                        if(magiaPos == 'C'){
+                            if(andandoCima[0] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 0;
+                            }
+                            if(andandoCima[1] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 1;
+                            }
+                            if(andandoCima[2] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 2;
+                            }
+                        }
+                        if(magiaPos == 'B'){
+                            if(andandoBaixo[0] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                    entrei = 0;
+                            }
+                            if(andandoBaixo[1] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 1;
+                            }
+                            if(andandoBaixo[2] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 2;
+                            }
+                        }
+                        if(magiaPos == 'D'){
+                            if(andandoDireita[0] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 0;
+                            }
+                            if(andandoDireita[1] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 1;
+                            }
+                            if(andandoDireita[2] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 2;
+                            }
+                        }
+                        if(magiaPos == 'E'){
+                            if(andandoEsquerda[0] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                            	entrei = 0;
+                            }
+                            if(andandoEsquerda[1] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 1;
+                            }
+                            if(andandoEsquerda[2] == 1){
+                            	desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
+                                entrei = 2;
+                            }
+                        }
+                    }      
                     }
 
                 ////---*--- SWITCH PARA CICLAR ENTRE OS SPRITES ----*----////
@@ -1160,29 +1281,42 @@
                                 andandoBaixo[1] = 1;
                             }
                             if(entrei == 1){
-                                andandoBaixo[0] = 0;
-                                andandoBaixo[1] = 1;
+                                andandoBaixo[1] = 0;
+                                andandoBaixo[2] = 1;
                             }
                             if(entrei == 2){
-                                andandoBaixo[0] = 0;
-                                andandoBaixo[1] = 1;
+                                andandoBaixo[2] = 0;
+                                andandoBaixo[0] = 1;
                             }
                             break;
                         case 'D':
                             if(entrei == 0){
-                                andandoBaixo[0] = 0;
-                                andandoBaixo[1] = 1;
+                                andandoDireita[0] = 0;
+                                andandoDireita[1] = 1;
                             }
                             if(entrei == 1){
-                                andandoBaixo[0] = 0;
-                                andandoBaixo[1] = 1;
+                                andandoDireita[1] = 0;
+                                andandoDireita[2] = 1;
                             }
                             if(entrei == 2){
-                                andandoBaixo[0] = 0;
-                                andandoBaixo[1] = 1;
+                                andandoDireita[2] = 0;
+                                andandoDireita[0] = 1;
                             }
                             break;
                         case 'E':
+                        	if(entrei == 0){
+                                andandoEsquerda[0] = 0;
+                                andandoEsquerda[1] = 1;
+                            }
+                            if(entrei == 1){
+                                andandoEsquerda[1] = 0;
+                                andandoEsquerda[2] = 1;
+                            }
+                            if(entrei == 2){
+                                andandoEsquerda[2] = 0;
+                                andandoEsquerda[0] = 1;
+                            }
+                            break;
                     }
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
