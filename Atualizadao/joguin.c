@@ -25,7 +25,7 @@
     int altura_sprite = 98, largura_sprite = 90;
 
     typedef struct {
-        int vida;
+        int vida; // o personagem podera ser atacado 2 vezes, na 3a ele morre
         int posX, posY;
     } Jogador;
 
@@ -77,7 +77,7 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
     	if(magiaPos == 'C'){
             if(andandoCima[0] == 1){
                 al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0,  (altura_sprite)*3, // posicao para tirar da folha dos sprites
+                    largura_sprite*0,  (altura_sprite)*3, // posicao para tirar da folha dos sprites
                     largura_sprite,(altura_sprite)*3, // tamanho para tirar
                     pos_x_sprite,pos_y_sprite,0); //  onde colocar a imagem, flags
             }
@@ -97,7 +97,7 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
         else if(magiaPos == 'B'){
             if(andandoBaixo[0] == 1){
                 al_draw_bitmap_region(folha_sprite_Caio_Black,
-                    0,0,
+                    largura_sprite*0,altura_sprite*0,
                     largura_sprite,altura_sprite,
                     pos_x_sprite,pos_y_sprite,0);
             }
@@ -525,9 +525,9 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
 /////////////////////////////////////////   VARIAVEIS DA MAIN   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int main(void){
         andandoDireita[0] = 1;
+        andandoEsquerda[0] = 1;
+        andandoCima[0] = 1;
         andandoBaixo[0] = 1;
-        andandoEsquerda[0] = 1;
-        andandoEsquerda[0] = 1;
         int entrei;
         int spriteAtual = 0; // para ciclar entre os sprites na movimentacao
         int i;
@@ -539,7 +539,7 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
         int cameraX = 0;
         int cameraY = 0;
         //essa variavel vai determinar para qual direcao a magia sera lancada
-        char magiaPos = 0;
+        char magiaPos = 'D'; //  começo o personagem virado pra direita
         //vou usar para receber os comandos do teclado
         char tecla;
 //////////////////////////////////////////////////////////////////////////////// *-- DEFININDO OS TAMANHOS DE CADA SPRITE --*//////////////////////////////////////////////////////////////////////
@@ -557,6 +557,11 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
         int pos_x_sprite=150, pos_y_sprite=150;
         //velocidade X Y que o sprite ira se mover pela janela
         int vel_x_sprite=0, vel_y_sprite=0;
+
+        // definindo o centro do personagem, ele é desenhado em (150,150) mas o seu centro esta andando metade da sua largura e altura nos eixos x e y
+        Jogador PlayerOne;
+        PlayerOne.posX = 195;
+        PlayerOne.posY = 199;
      
 
      ///---* SPRITES DE MAGIA --*//////
@@ -729,14 +734,27 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                         vel_x_sprite = 0;
                         linha_atual = 3;
                         break;
+                    
+                    // tecla z da maiga
+                    case ALLEGRO_KEY_Z:
+                        tecla = 0;
+                        break;
+                    
+                    // tecla x da magia
+                    case ALLEGRO_KEY_X:
+                        tecla = 0;
+                        break;
+                    // tecla c da magia
+                    case ALLEGRO_KEY_C:
+                        tecla = 0;
+                        break;
                     //esc. sair=1 faz com que o programa saia do loop principal
                     case ALLEGRO_KEY_ESCAPE:
                         sair = 1;
                         break;
                     }
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             else if(evento.type == ALLEGRO_EVENT_TIMER){
                 //a cada disparo do timer, incrementa cont_frames
@@ -785,11 +803,24 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
 
                 if(personagem == 1){ //  esse sera o personagem Caio Black
 //--------------------------------------------//////////// --* MAGIA DE FOGO (Z) //////////////------------------------------------------------------------------------------//
+                        //a intencao eh fazer uma linha de fogo em frente ao personagem(300 pixels em frente do personagem)
                         // PARA BAIXO
                         if(magiaPos == 'B' && tecla == 5 && framesTotal - frameReferencia < 12 && frameReferencia != 0){
                                 printf("printando magia aqui!\n");
                                 int cooldown = framesTotal - frameReferencia;
                                 printf("%d", cooldown);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite + 400, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite + 350, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite + 300, 0);
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                                     largura_magia,altura_magia,
@@ -815,6 +846,18 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                                     largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite - 400, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite - 350, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite,pos_y_sprite - 300, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
                                     pos_x_sprite,pos_y_sprite - 250, 0);
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
@@ -827,13 +870,25 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                                     largura_magia,altura_magia,
-                                    pos_x_sprite,pos_y_sprite - 100, 0);
+                                    pos_x_sprite, pos_y_sprite - 100, 0);
                         }
                         // PARA DIREITA
                         if(magiaPos == 'D' && tecla == 5 && framesTotal - frameReferencia < 12 && frameReferencia != 0){
                                 printf("printando magia aqui!\n");
                                 int cooldown = framesTotal - frameReferencia;
                                 printf("%d", cooldown);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite + 400,pos_y_sprite, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite + 350,pos_y_sprite, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite + 300,pos_y_sprite, 0);
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                                     largura_magia,altura_magia,
@@ -856,6 +911,18 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                                 printf("printando magia aqui!\n");
                                 int cooldown = framesTotal - frameReferencia;
                                 printf("%d", cooldown);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite - 400,pos_y_sprite, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite - 350,pos_y_sprite, 0);
+                                    al_draw_bitmap_region(magia_Fire,
+                                    regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
+                                    largura_magia,altura_magia,
+                                    pos_x_sprite - 300,pos_y_sprite, 0);
                                     al_draw_bitmap_region(magia_Fire,
                                     regiao_x_magia_Z,regiao_y_magia_Z+(128*(cooldown-1)),
                                     largura_magia,altura_magia,
@@ -1162,14 +1229,12 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                     if(vel_y_sprite > 0 || vel_y_sprite < 0){
                         // adequando as posicoes de acordo com a velocidade
                         pos_y_sprite += vel_y_sprite;
-                        char printarPersonagem = 0;
                         
                     	int linhas = 0;
                         int referencia;
                         // tenho 3 sprites para cada direcao
-                        if(printarPersonagem){
                             if(magiaPos == 'C'){
-                                contador_andarCima += 1;
+                                contador_andarCima += 1; //  variavel para alternar entre os sprites
                                 if(andandoCima[0] == 1){
                                     desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
                                     entrei = 0;
@@ -1198,37 +1263,6 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                                     entrei = 2;
                                 }
                             }
-                            if(magiaPos == 'D'){
-                                contador_andarDireita += 1;
-                                if(andandoDireita[0] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 0;
-                                }
-                                if(andandoDireita[1] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 1;
-                                }
-                                if(andandoDireita[2] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 2;
-                                }
-                            }
-                            if(magiaPos == 'E'){
-                                contador_andarEsquerda += 1;
-                                if(andandoEsquerda[0] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 0;
-                                }
-                                if(andandoEsquerda[1] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 1;
-                                }
-                                if(andandoEsquerda[2] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 2;
-                                }
-                            }
-                        }
                     }
 
                     // o sprite esta indo para direita ou esquerda
@@ -1238,36 +1272,6 @@ void desenhaSpritePersonagem(char magiaPos, int pos_x_sprite, int pos_y_sprite){
                     	int linhas = 0;
 
                         // tenho 3 sprites para cada direcao
-                            if(magiaPos == 'C'){
-                                contador_andarCima += 1;
-                                if(andandoCima[0] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 0;
-                                }
-                                if(andandoCima[1] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 1;
-                                }
-                                if(andandoCima[2] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 2;
-                                }
-                            }
-                            if(magiaPos == 'B'){
-                                contador_andarBaixo += 1;
-                                if(andandoBaixo[0] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                        entrei = 0;
-                                }
-                                if(andandoBaixo[1] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 1;
-                                }
-                                if(andandoBaixo[2] == 1){
-                                    desenhaSpritePersonagem(magiaPos, pos_x_sprite, pos_y_sprite);
-                                    entrei = 2;
-                                }
-                            }
                             if(magiaPos == 'D'){
                                 contador_andarDireita += 1;
                                 if(andandoDireita[0] == 1){
