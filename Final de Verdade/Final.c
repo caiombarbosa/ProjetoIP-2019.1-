@@ -38,13 +38,15 @@
     ALLEGRO_FONT *fonte2 = NULL;
 
 	// variaveis que vou usar para ciclar entre os sprites de movimentacao dos personagens
-	int andandoDireita[] = {};
-    int andandoEsquerda[] = {};
-    int andandoCima[] = {};
-    int andandoBaixo[] = {};
+	int andandoDireita[5] = {};
+    int andandoEsquerda[5] = {};
+    int andandoCima[5] = {};
+    int andandoBaixo[5] = {};
 
 	//largura e altura de cada sprite dentro da folha de personagens
     int altura_sprite = 98, largura_sprite = 90;
+
+    int personagem; //  sera usada para realizar a escolha do personagem
 
     typedef struct {
         int vida; // o personagem podera ser atacado 2 vezes, na 3a ele morre
@@ -52,6 +54,7 @@
         int magia; // para saber se ele lancou uma magia
         char virado; //  variavel para ver para qual lado o personagem esta virado    
         int character; // variavel para saber qual personagem tenho q desenhar
+        int posxInicial, posyInicial; // para comecar cada personagem no mapa em lugares diferentes
     } Jogador;
 
 
@@ -60,7 +63,7 @@ ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 ALLEGRO_TIMER *timer = NULL;
 
 // tudo isso eh para o menu 
-ALLEGRO_EVENT_QUEUE *evento = NULL;
+//ALLEGRO_EVENT_QUEUE *evento = NULL;
 ALLEGRO_EVENT_QUEUE *evento_menu = NULL;
 ALLEGRO_TIMER *tempo = NULL;
 // variavel para o codigo do menu (n sei para que serve direito no momento)
@@ -122,6 +125,7 @@ ALLEGRO_FONT *fonte = NULL;
 
 //=====================================
 //os bitmaps
+ALLEGRO_BITMAP *personagens = NULL;
 ALLEGRO_BITMAP  *image = NULL;  
 ALLEGRO_BITMAP *bar  = NULL;
 ALLEGRO_BITMAP *def = NULL;
@@ -161,7 +165,7 @@ void destroy();
 /////////////////////////////////////// --* FUNCOES DO PROGRAMA --* ////////////////////////////////////////////////////////////
 
 // funcao para incializar antes do jogo
-void inicializar1(){
+void inicializar(){
     if (!al_init()){
         fprintf(stderr, "Falha ao inicializar a biblioteca Allegro.\n");
     }
@@ -174,21 +178,70 @@ void inicializar1(){
         fprintf(stderr, "Falha ao inicializar allegro_image.\n");
     }
 
+    if(!al_init_acodec_addon()){
+      fprintf(stderr, "failed to initialize audio codecs!\n");
+    }
+
+    timer = al_create_timer(1.0 / FPS);
+    if(!timer) {
+        error_msg("Falha ao criar temporizador");
+    }
+
+    tempo = al_create_timer(1.0);
+    if(tempo == NULL){
+        error_msg("Falha ao iniciar T");
+    }
+
     if(!al_init_font_addon()){
         error_msg("Falha ao incializar o font addon!");
+    }    
+
+    if(!al_install_mouse()){
+        error_msg("Falha ao iniciar M");
     }
- 
+
+    if (!al_install_audio()){
+       error_msg("Falha ao iniciar audio");
+    }
+
     if (!al_init_ttf_addon()){
         fprintf(stderr, "Falha ao inicializar allegro_ttf.\n");
     }
- 
+    if(!al_init_primitives_addon()){
+        error_msg("Falha ao iniciar A.P");
+    }
+
     janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
     if (!janela){
         fprintf(stderr, "Falha ao criar a janela.\n");
     }
 
-    al_set_window_title(janela, "WIZARD KING");
 
+
+    evento_menu = al_create_event_queue();
+
+    if(evento_menu == NULL){
+        error_msg("Falha ao iniciar E.M");
+        al_destroy_display(janela);
+    }
+
+    fila_eventos = al_create_event_queue();
+    if(!fila_eventos) {
+        error_msg("Falha ao criar fila de eventos");
+        al_destroy_timer(timer);
+        al_destroy_display(janela);
+    }
+
+    if (!al_reserve_samples(5)){
+        fprintf(stderr, "failed to initialize audio codecs!\n");
+        error_msg("Falha ao iniciar samples");
+    }
+
+    al_register_event_source(fila_eventos, al_get_display_event_source(janela));
+    al_register_event_source(fila_eventos, al_get_timer_event_source(timer));
+    al_register_event_source(fila_eventos, al_get_keyboard_event_source());
+    al_start_timer(timer);
+    al_set_window_title(janela, "WIZARD KING");
 }
 
 // funcao para desenhar os sprites do personagem
@@ -338,14 +391,6 @@ bool inicializa(){
 
     if(!al_init_primitives_addon()){
         error_msg("Falha ao iniciar A.P");
-        return false;
-    }
-
-    evento = al_create_event_queue();
-
-    if(evento == NULL){
-         error_msg("Falha ao iniciar E");
-        al_destroy_display(janela);
         return false;
     }
 
@@ -734,6 +779,13 @@ bool loadBitmaps(){
     help = al_load_bitmap("start_2.jpg");
     credits = al_load_bitmap("start_3.jpg");
     exit1 = al_load_bitmap("start_4.jpg");
+    personagens = al_load_bitmap("fundoPersonagens.jpg");
+    if(!personagens){
+        error_msg("Falha ao carregar tela dos personagens");
+        al_destroy_display(janela);
+        return false;
+    }
+
 
     game_mode = al_load_bitmap("guide.jpg"); //  onde o jogo começa
     game_back = al_load_bitmap("top-3.jpg");
@@ -763,18 +815,16 @@ bool loadBitmaps(){
         return false;
     }
 
-
     if(menu1==NULL){
         error_msg("Falha na menu");    
         al_destroy_display(janela);
         return false;
-
     }
+
     if(play==NULL){
         error_msg("Falha na play");
         al_destroy_display(janela);
         return false;
-
     }
 
     if(exit1==NULL){
@@ -787,8 +837,8 @@ bool loadBitmaps(){
         error_msg("Falha na game_mode");
         al_destroy_display(janela);
         return false;
-
     }
+
     if(game_back==NULL){
 
         error_msg("Falha na game_back");
@@ -800,10 +850,7 @@ bool loadBitmaps(){
         error_msg("Falha na play");
         al_destroy_display(janela);
         return false;
-
     }
-
-
 
     if(timesup == NULL){
         error_msg("Falha na timesup");
@@ -819,27 +866,6 @@ bool loadBitmaps(){
 
     }
 
-    if(opening_2 == NULL){
-        error_msg("Falha na opening2");
-        al_destroy_display(janela);
-        return false;
-
-    }
-
-    if(opening_3 == NULL){
-        error_msg("Falha na opening3");
-        al_destroy_display(janela);
-        return false;
-
-    }
-
-    if(opening_4 == NULL){
-        error_msg("Falha na opening4");
-        al_destroy_display(janela);
-        return false;
-
-    }
-
     return true;
 
 }
@@ -848,15 +874,13 @@ bool loadBitmaps(){
 //FUNÇÃO QUE REGISTRA OS EVENTOS NA FILA DE EVENTOS
 void registerEvents(){
 
-    al_register_event_source(evento, al_get_display_event_source(janela));
-    al_register_event_source(evento, al_get_keyboard_event_source());
-    al_register_event_source(evento, al_get_timer_event_source(tempo));
+    al_register_event_source(evento_menu, al_get_display_event_source(janela));
+    al_register_event_source(evento_menu, al_get_keyboard_event_source());
+    al_register_event_source(evento_menu, al_get_timer_event_source(tempo));
 
     al_register_event_source(evento_menu, al_get_display_event_source(janela));
     al_register_event_source(evento_menu, al_get_keyboard_event_source());
-
 }
-
 
 
 //FUNÇAÕ AUXILIAR DE FPS
@@ -869,30 +893,6 @@ void start_timer(){
 double get_time(){
     return al_get_time() - start_time;
 }
-
-
-    /*if(you_win_sample==NULL){
-
-        error_msg("Falha ao iniciar you_win");
-        return false;
-    }
-
-     if(you_lose_sample==NULL){
-
-        error_msg("Falha ao iniciar you_lose");
-        return false;
-    }
-
-    if(timesup_sample==NULL){
-
-error_msg("Falha ao iniciar timesup");
-
-    }
-    
-      
-    return true;
-}
-*/
 
 
 
@@ -1216,8 +1216,8 @@ void Opening(){
             */
             fadein(opening_1,FADE_IN);
             fadeout(FADE_OUT);
-            fadein(opening_2,FADE_IN);
-            fadeout(FADE_OUT);
+            //fadein(opening_2,FADE_IN);
+            //fadeout(FADE_OUT);
             al_draw_bitmap(menu1,0,0,0);
             al_rest(2);          
             al_flip_display();
@@ -1230,7 +1230,6 @@ void destroy(){
 
 
     al_destroy_display(janela);
-    al_destroy_event_queue(evento);
     al_destroy_event_queue(evento_menu);
     al_destroy_timer(tempo);
 
@@ -1258,23 +1257,70 @@ void destroy(){
     //Fonts that will be destroyed
     al_destroy_font(fonte);
 
-
     //Audios that will be destroyed
     al_destroy_sample(sample);
     al_destroy_audio_stream(opening);
     al_destroy_sample(you_lose_sample);
     al_destroy_sample(you_win_sample);
     al_destroy_sample(timesup_sample);
-
-
-
 }
 
-
+// funcao para escolher os personagens
+int escolhePersonagem(){
+    int numero = 0;
+    bool escolheu = false;
+    printf("Cheguei aqui!");
+    al_draw_bitmap(personagens,0,0,0);
+    ALLEGRO_EVENT eventoPersonagem;
+    while(!escolheu){
+        al_wait_for_event(fila_eventos, &eventoPersonagem);
+        if (eventoPersonagem.type == ALLEGRO_EVENT_KEY_DOWN){
+            //verifica qual tecla foi pressionada
+            //crio um switch para adequar as velocidades ao movimento desejado
+            switch(eventoPersonagem.keyboard.keycode){
+            //personagem 1
+                case ALLEGRO_KEY_1:
+                    numero = 1;
+                    escolheu = true;
+                    break;
+            //personagem 2
+                case ALLEGRO_KEY_2:
+                    numero = 2;
+                    escolheu = true;
+                    break;
+            //personagem 3
+                case ALLEGRO_KEY_3:
+                    numero = 3;
+                    escolheu = true;
+                    break;
+            //personagem 4
+                case ALLEGRO_KEY_4:
+                    numero = 4;
+                    escolheu = true;
+                    break;
+            //personagem 5
+                case ALLEGRO_KEY_5:
+                    numero = 5;
+                    escolheu = true;
+                    break;
+            //personagem 6
+                case ALLEGRO_KEY_6:
+                    numero = 6;
+                    escolheu = true;
+                    break;
+            // personagem 7
+                case ALLEGRO_KEY_7:
+                    numero = 7;
+                    escolheu = true;
+                    break;
+            }
+        }
+    }
+    return numero;
+}
 
 int main(void)
 {
-
     if(!inicializa()){ // inicializa tudo para o jogo
         fprintf(stderr, "ERROR, Program not initialized correct.\n");
         return -1;
@@ -1305,9 +1351,10 @@ int main(void)
     Opening(); // antes do menu 
     al_destroy_bitmap(loading); 
     menu(); // inicia o menu
-    //escolhePersonagem(); // funcao que quero fazer para escolher os personagens
     destroy();
-    inicializar1();
+    personagem = 1;
+    //personagem = escolhePersonagem(); // funcao que quero fazer para escolher os personagens
+    inicializar();
     carregar_arquivos();
 /////////////////////////////////////////   VARIAVEIS DA MAIN PARA O JOGO   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -1318,7 +1365,6 @@ int main(void)
     int entrei;
     int spriteAtual = 0; // para ciclar entre os sprites na movimentacao
     int i;
-    int personagem = 1;
     int desenha = 1;
     int sair = 0;
     int framesTotal;
@@ -1342,7 +1388,7 @@ int main(void)
         //quantos frames devem se passar para atualizar para o proximo sprite
         int frames_sprite = 1, cont_frames=0;
         //posicao X Y da janela em que sera mostrado o sprite
-        int pos_x_sprite=150, pos_y_sprite=150;
+        int pos_x_sprite=350, pos_y_sprite=350;
         //velocidade X Y que o sprite ira se mover pela janela
         int vel_x_sprite=0, vel_y_sprite=0;
 
@@ -1390,6 +1436,9 @@ int main(void)
         int regiao_x_magia_C = 0, regiao_y_magia_C = 0;
 
         int regiao_x_magia_V = 0, regiao_y_magia_V = 0;
+    ///Camera 
+        int pos_x_camera = 350, pos_y_camera = 350;
+        int vel_x_camera = 0, vel_y_camera = 0;
 
         while(!sair){
             
@@ -1419,7 +1468,8 @@ int main(void)
                         case ALLEGRO_KEY_UP:
                             tecla = 1;
                             magiaPos = 'C';
-                            vel_y_sprite = -2;
+                            vel_y_sprite = -1;
+                            vel_y_camera = -5;
                             linha_atual = 2;
                             contador_andarCima = 0;
                             break;
@@ -1427,7 +1477,8 @@ int main(void)
                         case ALLEGRO_KEY_DOWN:
                             tecla = 2;
                             magiaPos = 'B';
-                            vel_y_sprite = 2;
+                            vel_y_sprite = 1;
+                            vel_y_camera = 5;
                             linha_atual = 0;
                             contador_andarBaixo = 0;
                             break;
@@ -1435,7 +1486,8 @@ int main(void)
                         case ALLEGRO_KEY_LEFT:
                             tecla = 3;
                             magiaPos = 'E';
-                            vel_x_sprite = -2;
+                            vel_x_sprite = -1;
+                            vel_x_camera = -5;
                             linha_atual = 1;
                             contador_andarEsquerda = 0;
                             break;
@@ -1443,7 +1495,8 @@ int main(void)
                         case ALLEGRO_KEY_RIGHT:
                             tecla = 4;
                             magiaPos = 'D';
-                            vel_x_sprite = 2;
+                            vel_x_sprite = 1;
+                            vel_x_camera = 5;
                             linha_atual = 3;
                             contador_andarDireita = 0;
                             break;
@@ -1494,24 +1547,28 @@ int main(void)
                     case ALLEGRO_KEY_UP:
                         tecla = 0;
                         vel_y_sprite = 0;
+                        vel_y_camera = 0;
                         linha_atual = 2;
                         break;
                     //seta para baixo
                     case ALLEGRO_KEY_DOWN:
                         tecla = 0;
                         vel_y_sprite = 0;
+                        vel_y_camera = 0;
                         linha_atual = 0;
                         break;
                     //seta para esquerda
                     case ALLEGRO_KEY_LEFT:
                         tecla = 0;
                         vel_x_sprite = 0;
+                        vel_x_camera = 0;
                         linha_atual = 1;
                         break;
                     //seta para direita.
                     case ALLEGRO_KEY_RIGHT:
                         tecla = 0;
                         vel_x_sprite = 0;
+                        vel_x_camera = 0;
                         linha_atual = 3;
                         break;
                     
@@ -1555,13 +1612,15 @@ int main(void)
                 }
 
                 //se o sprite estiver perto dos limites verticais
-                if ( pos_x_sprite + largura_sprite > largura_mapa - 20 || pos_x_sprite < 20 ){
+                if ( pos_x_sprite + largura_sprite > LARGURA_TELA - 20 || pos_x_sprite < 20 ){
                 //inverte o sentido da velocidade X, para andar no outro sentido
+                vel_x_camera = -vel_x_camera;
                 vel_x_sprite = -vel_x_sprite;
                 }
                 // se o sprite chegar perto dos limites horizontais
-                if( pos_y_sprite + altura_sprite > altura_mapa - 20 || pos_y_sprite < 20 ) {
+                if( pos_y_sprite + altura_sprite > ALTURA_TELA - 100 || pos_y_sprite < 20 ) {
                 //inverte o sentido da velocidade Y, para andar no outro sentido
+                vel_y_camera = -vel_y_camera;
                 vel_y_sprite = -vel_y_sprite;
                 }
 
@@ -1575,9 +1634,16 @@ int main(void)
                 //desenha o fundo na tela
                // al_draw_bitmap_region(fundo,0,0,LARGURA_TELA,ALTURA_TELA,0,0,0);
                 
-                cameraX = pos_x_sprite - LARGURA_TELA/2;
-                cameraY = pos_y_sprite - ALTURA_TELA/2;
-                al_draw_bitmap(fundo,(cameraX*-1)-400,(cameraY*-1)-400,0);
+                cameraX = pos_x_camera - LARGURA_TELA/2;
+                cameraY = pos_y_camera - ALTURA_TELA/2;
+                if(cameraX < 0){
+                    cameraX = 0;
+                }
+                if(cameraY < 0){
+                    cameraY = 0;
+                }
+
+                al_draw_bitmap(fundo,-cameraX,-cameraY,0);
             
                 ////////////////////////////////////////////////* -- DESENHANDO AS MAGIAS QUE FORAM USADA --*///////////////////////////////////////////////////////////////////////////
 
@@ -2009,9 +2075,8 @@ int main(void)
                     if(vel_y_sprite > 0 || vel_y_sprite < 0){
                         // adequando as posicoes de acordo com a velocidade
                         pos_y_sprite += vel_y_sprite;
-                        
+                        pos_y_camera += vel_y_camera;
                     	int linhas = 0;
-                        int referencia;
                         // tenho 3 sprites para cada direcao
                             if(magiaPos == 'C'){
                                 contador_andarCima += 1; //  variavel para alternar entre os sprites
@@ -2049,6 +2114,7 @@ int main(void)
                     else if(vel_x_sprite > 0 || vel_x_sprite < 0){
                         // adequando as posicoes de acordo com a velocidade
                         pos_x_sprite += vel_x_sprite;
+                        pos_x_camera += vel_x_camera;
                     	int linhas = 0;
 
                         // tenho 3 sprites para cada direcao
